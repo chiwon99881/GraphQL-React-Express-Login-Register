@@ -1,0 +1,14 @@
+.item {
+    text-align:center;
+    padding-top:1rem;
+    padding-bottom:1rem;
+    display:table-cell;
+    color:white;
+    text-decoration:none;
+    font-size:1.5rem;
+
+}
+
+.item:hover,.item:active {
+    background:#ff4757;
+}
