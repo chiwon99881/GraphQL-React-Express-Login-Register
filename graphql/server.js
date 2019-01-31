@@ -29,11 +29,30 @@ const UserModel = sequelize.define('user',{
 sequelize.sync({
     force:false
 })
+const SessionModel = sequelize.define('sessions',{
+    session_id: {
+        type:Sequelize.STRING,
+        primaryKey:true
+    }, 
+    expires: {
+        type:Sequelize.INTEGER
+    },
+    data: {
+        type:Sequelize.TEXT
+    }
+},{
+    tableName:'sessions',
+    timestamps:false
+});
+sequelize.sync({
+    force:false 
+})
 const Model = sequelize.models.user;
-
+const Session = sequelize.models.sessions;
 const typeDefs = `
     type Query {
         isLoggedIn : Boolean!
+        logout:Boolean!
     }
     type Mutation {
         login(name:String!,password:String!):Boolean!
@@ -48,7 +67,13 @@ const getState = () => {
 
 const resolvers = {
     Query: {
-        isLoggedIn:() => getState() 
+        isLoggedIn:() => getState(),
+        logout:() =>  {
+            Session.destroy({
+                where:{}
+            })
+            return true
+        }
     },
     Mutation: {
         login:(_,{name,password},ctx) => {
